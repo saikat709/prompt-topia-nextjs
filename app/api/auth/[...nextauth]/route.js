@@ -10,6 +10,13 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     })
   ],
   callbacks: {
@@ -21,6 +28,9 @@ const handler = NextAuth({
       return session;
     },
     async signIn({ account, profile, user, credentials }) {
+      // console.log(profile);
+      console.log("LOGGING IN USING: ", account.provider);
+
       try {
         await connectToDB();
 
